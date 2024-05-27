@@ -1,20 +1,21 @@
 #!/bin/sh
 # Set variables
 DB_NAME="laravel"
+CRON_USER="root"
 
 FULLDATE=$(date +"%Y-%d-%m %H:%M")
 NOW=$(date +"%Y-%m-%d-%H-%M")
-MYSQL_DUMP=$(which mysqldump)
-GIT=$(which git)
+MYSQL_DUMP=`which mysqldump`
+GIT=`which git`
 TEMP_BACKUP="latest_backup.sql"
 BACKUP_DIR=$(date +"%Y/%m")
 
 # Check current Git status and update
 ${GIT} status
-${GIT} pull origin main
+${GIT} pull origin HEAD
 
 # Dump database
-${MYSQL_DUMP} -u root $DB_NAME > $TEMP_BACKUP &
+${MYSQL_DUMP} -u "$CRON_USER" $DB_NAME > $TEMP_BACKUP &
 wait
 
 # Make backup directory if not exists (format: {year}/{month}/)
@@ -31,10 +32,4 @@ rm -f $TEMP_BACKUP
 # Add to Git and commit
 ${GIT} add -A
 ${GIT} commit -m "Automatic backup - $FULLDATE"
-
-# Set SSH key for Git authentication
-eval "$(ssh-agent -s)"
-ssh-add /home/abinoveramesh/.ssh/id_rsa  # Path to your private key
-
-# Push to GitHub using SSH authentication
-${GIT} push origin main
+${GIT} push origin HEAD
