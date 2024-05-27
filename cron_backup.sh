@@ -34,7 +34,7 @@ ${GIT} commit -m "Automatic backup - $FULLDATE"
 
 # Set SSH key for Git authentication
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa  # Path to your private key
+ssh-add /home/abinoveramesh/.ssh/id_rsa  # Path to your private key
 
 # Push to GitHub using SSH authentication
 ${GIT} push origin main
