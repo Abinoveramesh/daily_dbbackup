@@ -29,12 +29,7 @@ tar -cvzf $BACKUP_DIR/$DB_NAME-$NOW-sql.tar.gz $TEMP_BACKUP
 rm -f $TEMP_BACKUP
 
 # Add to Git and commit
-${GIT} add .
-${GIT} commit -m "Automatic backup - $FULLDATE"
-
-# Set SSH key for Git authentication
-eval "$(ssh-agent -s)"
-ssh-add /home/abinoveramesh/.ssh/id_rsa  # Path to your private key
-
+git add .
+git commit -m "Automatic backup - $FULLDATE"
 # Push to GitHub using SSH authentication
-${GIT} push origin main
+git push origin main
