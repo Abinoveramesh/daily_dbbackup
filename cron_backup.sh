@@ -25,11 +25,11 @@ fi
 # Compress SQL dump
 tar -cvzf $BACKUP_DIR/$DB_NAME-$NOW-sql.tar.gz $TEMP_BACKUP
 
-# Remove original SQL dump
-rm -f $TEMP_BACKUP
-
 # Add to Git and commit
 git add .
 git commit -m "Automatic backup - $FULLDATE"
 # Push to GitHub using SSH authentication
 git push origin main
+
+# Remove original SQL dump
+rm -f $TEMP_BACKUP
