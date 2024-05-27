@@ -5,7 +5,7 @@ DB_NAME="laravel"
 FULLDATE=$(date +"%Y-%d-%m %H:%M")
 NOW=$(date +"%Y-%m-%d-%H-%M")
 MYSQL_DUMP=$(which mysqldump)
-GIT=$(which git)
+GIT="git"
 TEMP_BACKUP="latest_backup.sql"
 BACKUP_DIR=$(date +"%Y/%m")
 
@@ -25,11 +25,11 @@ fi
 # Compress SQL dump
 tar -cvzf $BACKUP_DIR/$DB_NAME-$NOW-sql.tar.gz $TEMP_BACKUP
 
-# Add to Git and commit
-git add .
-git commit -m "Automatic backup - $FULLDATE"
-# Push to GitHub using SSH authentication
-git push origin main
-
 # Remove original SQL dump
 rm -f $TEMP_BACKUP
+
+# Add to Git and commit
+${GIT} add .
+${GIT} commit -m "Automatic backup - $FULLDATE"
+# Push to GitHub using SSH authentication
+${GIT} push origin main
